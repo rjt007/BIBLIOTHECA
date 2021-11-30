@@ -20,7 +20,6 @@ app.use('/',indexRoute);
 app.use('/authors',authorRoute);
 
 const mongoose = require('mongoose');
-const nodemon = require('nodemon');
 mongoose.connect(process.env.DATABASE_URL);
 
 const db = mongoose.connection;
