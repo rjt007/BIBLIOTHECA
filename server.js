@@ -1,4 +1,7 @@
-require('dotenv').config();
+if(process.env.NODE_ENV!=='production')
+{
+    require('dotenv').config();
+}
 const express = require('express');
 const app = express();
 const expressLayout = require('express-ejs-layouts');
@@ -17,13 +20,13 @@ app.use('/',indexRoute);
 app.use('/authors',authorRoute);
 
 const mongoose = require('mongoose');
+const nodemon = require('nodemon');
 mongoose.connect(process.env.DATABASE_URL);
 
 const db = mongoose.connection;
 db.on('error', error=>console.error(error));
 db.once('open',()=>console.log('Connected to database..'));
 
-const PORT = process.env.PORT;
-app.listen(PORT, ()=>{
+app.listen(process.env.PORT || 4000 , ()=>{
     console.log("Server is listening on port 4000...");
 })
