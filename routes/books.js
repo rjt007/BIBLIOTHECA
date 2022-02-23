@@ -42,6 +42,7 @@ router.get('/new',async(req,res)=>{
 //Adding New Book
 router.post('/',async(req,res)=>{
 
+    try{
     const book = new Book(
     {
         title:req.body.title,
@@ -51,12 +52,10 @@ router.post('/',async(req,res)=>{
         author:req.body.author
     });
     saveCover(book,req.body.cover);
-    try{
-        const newBook = await book.save();
-        //res.redirect(`/books/${newBook.id}`);
-        res.redirect('books');
+    const newBook = await book.save();
+    res.redirect(`/books/${newBook.id}`);
     }catch{
-        renderFormPage(res, book, 'new', true);
+      res.redirect('/')
     }
 })
 
