@@ -20,11 +20,16 @@
     <script defer src="https://unpkg.com/filepond@^4/dist/filepond.js"></script>
 
     <script defer src="/javascripts/fileUpload.js"></script>
+    <link id="main-css" rel="stylesheet" href="/stylesheets/main.css">
     <title>BIBLIOTHECA</title>
 </head>
 <body>
-    <%- include('../partials/header') %>
-    <%- include('../partials/error_msg') %> 
-    <%-body%>  
+  <div class="container">
+    <%- include('../partials/header.ejs') %>
+    <div class="inner-container">
+      <%- include('../partials/error_msg.ejs') %>
+      <%- body %>
+    </div>
+  </div>
 </body>
 </html>

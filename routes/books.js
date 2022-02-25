@@ -5,7 +5,7 @@ const Book = require('../models/book');
 
 const imageMimeTypes = ['image/jpeg','image/gif','image/png'];
 
-//Get All the Books
+//Books Route
 router.get('/',async(req,res)=>{
 
   let query = Book.find();
@@ -33,33 +33,31 @@ router.get('/',async(req,res)=>{
     }
 })
 
-//Form for Creating New Book
+//New Autor Route
 router.get('/new',async(req,res)=>{
     let path = 'new';
     renderFormPage(res, new Book(),'new');
 })
 
-//Adding New Book
+//Adding a New Book
 router.post('/',async(req,res)=>{
-
-    try{
-    const book = new Book(
-    {
+    const book = new Book({
         title:req.body.title,
         pageCount: parseInt(req.body.pageCount),
         publishDate: new Date(req.body.publishDate),
         description:req.body.description,
         author:req.body.author
     });
+    try{
     saveCover(book,req.body.cover);
     const newBook = await book.save();
     res.redirect(`/books/${newBook.id}`);
     }catch{
-      res.redirect('/')
+      renderFormPage(res, book,'new', true);
     }
 })
 
-//Show Book With Particular Id
+//Getting Book With Particular Id
 router.get('/:id',async(req,res)=>{
     try{
       const book = await Book.findById(req.params.id).populate('author').exec();
@@ -69,7 +67,7 @@ router.get('/:id',async(req,res)=>{
     }
 })
 
-//Page for Editing Book
+//Edit Book Route
 router.get('/:id/edit',async(req,res)=>{
   try{
     const book = await Book.findById(req.params.id);
@@ -120,7 +118,7 @@ router.delete('/:id',async(req,res)=>{
         })
       }
       else{
-        res.redirect(`/books`);
+        res.redirect('/');
       }
     }
 })
@@ -135,7 +133,7 @@ async function renderFormPage(res, book, form ,hasError = false) {
     }
 
     if (hasError){
-          if(form==='edit'){
+          if(form === 'edit'){
             params.errorMessage = 'Error Updating Book';
           }
           else{
